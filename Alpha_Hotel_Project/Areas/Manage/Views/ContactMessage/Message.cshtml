@@ -1,0 +1,29 @@
+﻿@model ContactMessage
+@{
+    int count = 0;
+}
+<div class="container-fluid pt-4 px-4">
+    <div class="col-12">
+        <div class="bg-light rounded h-100 p-4">
+            <h6 style="margin-bottom: 1.5rem !important;" class="mb-4 border-bottom">Message Detail</h6>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Fullname</th>
+                        <th scope="col">Message Text</th>
+                        <th scope="col">Reply</th>
+                    </tr>
+                </thead>
+                <tbody style="vertical-align: middle;">
+                    <tr>
+                        <td>@Model.FullName</td>
+                        <td>@Model.Message</td>
+                        <td>
+                            <a href="mailto:@Model.Email" class="btn btn-sm btn-sm-square btn-outline-success m-2"> <i class="fa fa-reply"></i> </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

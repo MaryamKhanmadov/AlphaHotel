@@ -1,0 +1,79 @@
+﻿@model PaginatedList<AppUser>
+@{
+    int count = ((Model.ActivePage - 1) * 5);
+}
+<div class="container-fluid pt-4 px-4">
+    <div class="col-12">
+        <div class="bg-light rounded h-100 p-4">
+            <h6 style="margin-bottom: 1.5rem !important;" class="mb-4 border-bottom">User List</h6>
+            <div style="margin-bottom: 1rem;">
+                <form method="post" asp-action="index" asp-controller="user" class="d-none d-md-flex">
+                    <input style="width: auto;" class="form-control border-0" name="search" value="" placeholder="Search">
+                    <button type="submit" style="border:none;margin-left: 5px;"><i style="margin-left: 0.5rem;" class="fa fa-search me-lg-2"></i></button>
+                </form>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Fullname</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">IsActive</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody style="vertical-align: middle;">
+                    @foreach (var item in Model)
+                    {
+                        count++;
+                        <tr>
+                            <th scope="row">@count</th>
+                            <td>@item.Fullname</td>
+                            <td>@item.UserName</td>
+                            <td>@if(item.IsActive){
+                                    <a class="btn btn-sm btn-sm-square btn-outline-danger m-2" asp-action="blocked" asp-route-id="@item.Id" asp-controller="user"> <i class="fa fa-remove"></i> </a>
+                                }
+                                else{
+                                    <a class="btn btn-sm btn-sm-square btn-outline-success m-2" asp-action="actived" asp-route-id="@item.Id" asp-controller="user"> <i class="fa fa-reply-all"></i> </a>
+                                }
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-sm-square btn-outline-primary m-2" asp-action="Detail" asp-route-id="@item.Id" asp-controller="user"> <i class="fa fa-address-card"></i> </a>
+                                @*<a class="btn btn-sm btn-sm-square btn-outline-success m-2" asp-action="update" asp-route-id="@item.Id" asp-controller="user"> <i class="fa fa-pen"></i> </a>*@
+                                @*<a class="btn btn-sm btn-sm-square btn-outline-danger m-2 delete-button" asp-route-id="@item.Id" asp-action="delete" asp-controller="user"> <i class="fa fa-trash"></i> </a>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-center my-3">
+    <form>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @if (Model.HasPrevious)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-route-page="@(Model.ActivePage-1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
+                @for (int i = 1; i <= Model.TotalPageCount; i++)
+                {
+                    <li class="page-item @((Model.ActivePage==i)? "active" : "")"><a class="page-link  " asp-route-page="@i">@i</a></li>
+                }
+                @if (Model.HasNext)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-route-page="@((Model.ActivePage+1))" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </form>
+</div>

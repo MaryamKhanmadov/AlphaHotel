@@ -1,0 +1,82 @@
+﻿@model PaginatedList<Setting>
+@{
+    int count = 0;
+    int countLenght = 0;
+}
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<div class="container-fluid pt-4 px-4">
+    <div class="col-12">
+        <div class="bg-light rounded h-100 p-4">
+            <h6 style="margin-bottom: 1.5rem !important;" class="mb-4 border-bottom">Setting List</h6>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Logo or Icon</th>
+                        <th scope="col">Key</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody style="vertical-align: middle;">
+                    @foreach (var item in Model)
+                    {
+                        count++;
+                        <tr>
+                            <th scope="row">@count</th>
+                            @if (@item.Value.Contains(".png") || @item.Value.Contains(".jpeg") || @item.Value.Contains(".jpg"))
+                            {
+                                <td>
+                                    <div>
+                                        <img style="width: 50px;height:50px;border-radius: 50%;" src="~/assets/img/logos/@item.Value">
+                                    </div>
+                                </td>
+                            }
+                            else{
+                                <td>
+                                    <div>
+                                        <i class="material-icons">computer</i>
+                                    </div>
+                                </td>
+                            }
+                            <td>@item.Key</td>
+                            <td>@item.Value</td>
+                            <td>
+                                <a class="btn btn-sm btn-sm-square btn-outline-success m-2" asp-action="update" asp-route-id="@item.Id" asp-controller="setting"> <i class="fa fa-pen"></i> </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center my-3">
+    <form>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @if (Model.HasPrevious)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-route-page="@(Model.ActivePage-1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
+                @for (int i = 1; i <= Model.TotalPageCount; i++)
+                {
+                    <li class="page-item @((Model.ActivePage==i)? "active" : "")"><a class="page-link  " asp-route-page="@i">@i</a></li>
+                }
+                @if (Model.HasNext)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-route-page="@((Model.ActivePage+1))" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </form>
+</div>

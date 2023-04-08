@@ -1,0 +1,158 @@
+﻿@model DashboardViewModel
+@{
+    int count = 0;
+    List<Order> todayOrders = Model.Orders.Where(x => x.CreateDate.Day == DateTime.Now.Day).ToList();
+    List<Order> nowMonthOrders = Model.Orders.Where(x => x.CreateDate.Month == DateTime.Now.Month).ToList();
+    List<AppUser> userList = Model.AppUsers.ToList();
+    int usercount = userList.Count - 1;
+    int todayOrderCount = todayOrders.Count;
+    double total = 0;
+    double totalMonth = 0;
+    foreach (var item in todayOrders)
+    {
+        total += item.OrderItem.TotalPrice;
+    }
+    foreach (var item in nowMonthOrders)
+    {
+        totalMonth += item.OrderItem.TotalPrice;
+    }
+}
+<!-- Sale & Revenue Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-line fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Sale</p>
+                    <h6 class="mb-0">$@total</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Monthly Sales</p>
+                    <h6 class="mb-0">$@totalMonth</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-area fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">User Count</p>
+                    <h6 class="mb-0">@usercount</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Order Count</p>
+                    <h6 class="mb-0">@todayOrderCount</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sale & Revenue End -->
+<!-- Recent Sales Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Orders</h6>
+            <a asp-action="index" asp-controller="order">Show All</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Member Name</th>
+                        <th scope="col">TotalPrice</th>
+                        <th scope="col">OrderStatus</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody style="vertical-align: middle;">
+                    @foreach (var item in Model.RecentOrders)
+                    {
+                        count++;
+                        <tr>
+                            <th scope="row">@count</th>
+                            <td>@item.CreateDate.ToShortDateString()</td>
+                            <td>@item.OrderItem.Fullname</td>
+                            <td>@item.OrderItem.TotalPrice.ToString("0.00")$</td>
+                            <td>
+                                <span style="font-size:15px;padding:9px 16px;" class="btn btn-@(item.OrderStatus == Alpha_Hotel_Project.Enums.OrderStatus.Pending ? "secondary"
+                                :(item.OrderStatus == Alpha_Hotel_Project.Enums.OrderStatus.Accepted ? "success"
+                                : "danger")) rounded-pill m-2">@item.OrderStatus</span>
+                            </td>
+                            <td><a asp-action="detail" asp-controller="order" asp-route-id="@item.Id" class="btn btn-info text-white">Detail</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Recent Sales End -->
+<!-- Widgets Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-md-6 col-xl-4">
+            <div class="h-100 bg-light rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h6 class="mb-0">Messages</h6>
+                    <a asp-action="index" asp-controller="contactmessage" asp-area="manage">Show All</a>
+                </div>
+                @foreach (var item in Model.ContactMessages)
+                {
+                    <div class="d-flex align-items-center border-bottom py-3">
+                        <img class="rounded-circle flex-shrink-0" src="~/uploads/commentuser/default-user-icon-2.jpg" alt="" style="width: 40px; height: 40px;">
+                        <div class="w-100 ms-3">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-0">@item.FullName</h6>
+                                <small>@item.MessageTime</small>
+                            </div>
+                            <span>@item.Subject...</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-xl-4">
+            <div class="h-100 bg-light rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-0">Calender</h6>
+                    <a href="">Show All</a>
+                </div>
+                <div id="calender"></div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-xl-4">
+            <div class="h-100 bg-light rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-0">User List</h6>
+                    <a asp-action="index" asp-controller="user">Show All</a>
+                </div>
+                @foreach (var item in userList.Where(x=>x.Email!=null).OrderByDescending(x=>x.CreateDate).Take(5))
+                {
+                    <div class="d-flex align-items-center border-bottom py-2">
+                        <div class="w-100 ms-3">
+                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                <span>@item.Fullname...</span>
+                                <i class="fa fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Widgets End -->

@@ -1,0 +1,197 @@
+﻿@inject Alpha_Hotel_Project.Services.UserSettingService service;
+@{
+    List<Setting> settings = await service.GetSettingsAsnyc();
+}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<!-- Mirrored from storage.googleapis.com/theme-vessel-items/checking-sites/hotel-alpha-html/HTML/main/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 05 Feb 2023 14:02:40 GMT -->
+<head>
+    <title>Hotel Alpha - Booking and Reservation Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <!-- External CSS libraries -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/animate.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap-submenu.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap-select.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/fonts/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/fonts/flaticon/font/flaticon.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/fonts/linearicons/style.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/jquery.mCustomScrollbar.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap-datepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/dropzone.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/slick.css" />
+    <link rel="stylesheet" href="~/assets/css/leaflet.css" type="text/css" />
+
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/initial.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/skins/default.css" />
+
+    <!-- Favicon icon -->
+    <link rel="shortcut icon" href="~/assets/img/favicon.ico" type="image/x-icon">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.1/sweetalert2.min.css" integrity="sha512-NvuRGlPf6cHpxQqBGnPe7fPoACpyrjhlSNeXVUY7BZAj1nNhuNpRBq3osC4yr2vswUEuHq2HtCsY2vfLNCndYA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/ie10-viewport-bug-workaround.css" />
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script  src="~/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="~/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script  src="~/assets/js/html5shiv.min.js"></script>
+    <script  src="~/assets/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TFC5925"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="page_loader"></div>
+
+    @*@await Html.PartialAsync("_TopHeaderPartialView")*@
+    <!-- Main header start -->
+    @*@{
+        Html.RenderPartial("_MainHeaderPartialView");
+    }*@
+
+    <!-- Main header end -->
+    <!-- Sidenav start -->
+    <!-- Sidenav end -->
+    @*@{
+        Html.RenderPartial("_BannerPartialView");
+    }*@
+    @RenderBody()
+
+    <!-- Footer start -->
+    <footer class="main-footer clearfix">
+        <div class="container">
+            <!-- Footer info-->
+            <div class="footer-info">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="footer-item">
+                            <div class="main-title-2">
+                                <h1>Contact Us</h1>
+                            </div>
+                            <ul class="personal-info">
+                                <li>
+                                    <i class="fa fa-map-marker"></i>
+                                    Address: @settings.FirstOrDefault(x=>x.Key == "Address")?.Value
+                                </li>
+                                <li>
+                                    <i class="fa fa-envelope"></i>
+                                    Email: <a href="mailto:@settings.FirstOrDefault(x=>x.Key == "Email")?.Value">@settings.FirstOrDefault(x=>x.Key == "Email")?.Value</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-phone"></i>
+                                    Phone: <a href="tel:@settings.FirstOrDefault(x=>x.Key == "Phone")?.Value">@settings.FirstOrDefault(x=>x.Key == "Phone")?.Value</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-fax"></i>
+                                    Fax: @settings.FirstOrDefault(x=>x.Key == "Fax")?.Value
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                        <div class="footer-item">
+                            <div class="main-title-2">
+                                <h1>Booking</h1>
+                            </div>
+                            <ul class="links">
+                                <li>
+                                    <a asp-action="index" asp-controller="home">Hotel</a>
+                                </li>
+                                <li>
+                                    <a asp-action="index" asp-controller="about">Our Facilties</a>
+                                </li>
+                                <li>
+                                    <a asp-action="index" asp-controller="room">Rooms</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                        <div class="footer-item">
+                            <div class="main-title-2">
+                                <h1>About</h1>
+                            </div>
+                            <ul class="links">
+                                <li>
+                                    <a href="about.html">About Us</a>
+                                </li>
+                                <li>
+                                    <a asp-action="index" asp-controller="blog">Blog</a>
+                                </li>
+                                <li>
+                                    <a asp-action="index" asp-controller="room">Booking</a>
+                                </li>
+                                <li>
+                                    <a asp-action="index" asp-controller="contact">Contact Us</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copy-right">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <p> &copy;  2021 <a href="@settings.FirstOrDefault(x=>x.Key == "CopyrightUrl")?.Value" target="_blank">Theme Vessel</a>. All Rights Reserved.</p>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="clearfix"></div>
+                        <ul class="social-list">
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "TwitterUrl")?.Value" class="twitter-bg"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "FacebookUrl")?.Value" class="facebook-bg"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "PinterestUrl")?.Value" class="rss-bg"><i class="fa fa-rss"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "GoogleUrl")?.Value" class="google-bg"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "LinkedinUrl")?.Value" class="linkedin-bg"><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer end -->
+
+    <script src="~/assets/js/jquery.min.js"></script>
+    <script src="~/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/bootstrap-submenu.js"></script>
+    <script src="~/assets/js/jquery.mb.YTPlayer.js"></script>
+    <script src="~/assets/js/wow.min.js"></script>
+    <script src="~/assets/js/bootstrap-select.min.js"></script>
+    <script src="~/assets/js/jquery.easing.1.3.js"></script>
+    <script src="~/assets/js/jquery.scrollUp.js"></script>
+    <script src="~/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="~/assets/js/jquery.filterizr.js"></script>
+    <script src="~/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/assets/js/slick.min.js"></script>
+    <script src="~/assets/js/sidebar.js"></script>
+    <script src="~/assets/js/app.js"></script>
+    <script src="~/assets/js/dropzone.js"></script>
+    <script src="~/assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.1/sweetalert2.min.js" integrity="sha512-vCI1Ba/Ob39YYPiWruLs4uHSA3QzxgHBcJNfFMRMJr832nT/2FBrwmMGQMwlD6Z/rAIIwZFX8vJJWDj7odXMaw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="~/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <!-- Custom javascript -->
+    <script src="~/assets/manage/js/delete.js"></script>
+</body>
+
+<!-- Mirrored from storage.googleapis.com/theme-vessel-items/checking-sites/hotel-alpha-html/HTML/main/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 05 Feb 2023 14:04:27 GMT -->
+</html>

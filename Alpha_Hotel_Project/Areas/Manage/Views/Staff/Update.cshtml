@@ -1,0 +1,61 @@
+﻿@model Staff
+
+<div class="col-sm-12 pt-4 px-4">
+    <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">Staff Update</h6>
+        <form method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <label asp-for="Fullname" class="col-sm-2 col-form-label">Fullname</label>
+                <div class="col-sm-10">
+                    <input asp-for="Fullname" class="form-control" placeholder="Fullname...">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="PhoneNumber" class="col-sm-2 col-form-label">PhoneNumber</label>
+                <div class="col-sm-10">
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="PhoneNumber...">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="TwitterUrl" class="col-sm-2 col-form-label">TwitterUrl</label>
+                <div class="col-sm-10">
+                    <input asp-for="TwitterUrl" class="form-control" placeholder="TwitterUrl...">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="FacebookUrl" class="col-sm-2 col-form-label">FacebookUrl</label>
+                <div class="col-sm-10">
+                    <input asp-for="FacebookUrl" class="form-control" placeholder="FacebookUrl...">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="GoogleUrl" class="col-sm-2 col-form-label">GoogleUrl</label>
+                <div class="col-sm-10">
+                    <input asp-for="GoogleUrl" class="form-control" placeholder="GoogleUrl...">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="ProfessionId" class="col-sm-2 col-form-label">Profession</label>
+                <select class="form-select mb-3" aria-label="Default select example" asp-for="ProfessionId">
+                    <option selected="">Select profession</option>
+                    @foreach (var item in ViewBag.Profession)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImageFile" class="form-label">ImageFile</label>
+                <input class="form-control" asp-for="ImageFile" placeholder="ImageFile...">
+            </div>
+            <div class="mb-3">
+                <img style="border: 1px solid #ddd;border-radius: 4px;padding: 5px;width: 150px;" src="~/uploads/staff/@Model.ImageUrl">
+            </div>
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Descreption write here" asp-for="Descreption" style="height: 150px;"></textarea>
+                <label asp-for="Descreption">Descreption...</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>

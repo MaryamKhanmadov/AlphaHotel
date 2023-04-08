@@ -1,0 +1,38 @@
+﻿@inject Alpha_Hotel_Project.Services.UserSettingService service;
+@{
+    AppUser appUser = await service.GetUser();
+    List<Setting> settings = await service.GetSettingsAsnyc();
+}
+<header class="top-header" id="top-header-1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-7 col-7">
+                <div style="vertical-align:middle" class="list-inline">
+                    <a href="tel:@settings.FirstOrDefault(x=>x.Key == "SupportPhone")?.Value"><i class="fa fa-phone"></i>Need Support? @settings.FirstOrDefault(x=>x.Key == "SupportPhone")?.Value</a>
+                    <a href="mailto:@settings.FirstOrDefault(x=>x.Key == "Email")?.Value" class="d-none-768"><i class="fa fa-envelope"></i>@settings.FirstOrDefault(x=>x.Key == "Email")?.Value</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-5 col-5">
+                <ul class="top-social-media pull-right">
+                    @if (User.Identity.IsAuthenticated is false)
+                    {
+                        <li>
+                            <a style="color:white" asp-action="login" asp-controller="account"><i style="color:white;" class="fa fa-sign-in"></i>Login</a>
+                        </li>
+                        <li>
+                            <a style="color:white" asp-action="register" asp-controller="account"><i style="color:white;" class="fa fa-user"></i>Register</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li style="color:white">
+                            <p style="color:white;margin-bottom: 0rem;">@appUser.Fullname</p>
+                            <a style="color:white" asp-action="logout" asp-controller="account"><i style="color:white;" class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+                            <a style="color:white" asp-action="profile" asp-controller="account"><p style="color:white;" class="fa fa-user" aria-hidden="true"></p>My Profile</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,36 @@
+﻿@model Setting
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<div class="col-sm-12 pt-4 px-4">
+    <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">Staff Update</h6>
+        <form method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <label asp-for="Value" class="col-sm-2 col-form-label">@Model.Key</label>
+                <div class="col-sm-10">
+                    <input asp-for="Value" class="form-control" placeholder="@Model.Key...">
+                </div>
+            </div>
+            @if (@Model.Value.Contains(".png") || @Model.Value.Contains(".jpeg") || @Model.Value.Contains(".jpg"))
+            {
+                <div class="mb-3">
+                    <label asp-for="ImageFile" class="form-label">ImageFile</label>
+                    <input class="form-control" asp-for="ImageFile" placeholder="ImageFile...">
+                </div>
+                <td>
+                    <div>
+                        <img style="width: 50px;height:50px;border-radius: 50%;" src="~/assets/img/logos/@Model.Value">
+                    </div>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <div>
+                        <i class="material-icons">computer</i>
+                    </div>
+                </td>
+            }
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>

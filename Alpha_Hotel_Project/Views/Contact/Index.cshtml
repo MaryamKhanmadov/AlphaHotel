@@ -1,0 +1,185 @@
+﻿@inject Alpha_Hotel_Project.Services.UserSettingService service;
+@{
+    List<Setting> settings = await service.GetSettingsAsnyc();
+    AppUser appUser = await service.GetUser();
+}
+@model ContactMessage
+<!-- Top header start -->
+@await Html.PartialAsync("_TopHeaderPartialView")
+<!-- Top header end -->
+<!-- Main header start -->
+@await Html.PartialAsync("_MainHeaderPartialView")
+<!-- Main header end -->
+<!-- Sub banner start -->
+<div class="sub-banner">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1>Contact Us</h1>
+        </div>
+        <nav class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Home</a></li>
+                <li class="breadcrumb-item active">Contact Us</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Sub Banner end -->
+<!-- Contact 1 start -->
+<div class="contact-1 content-area-6">
+    <div class="container">
+        <div class="main-title">
+            <h1>Contact Us</h1>
+        </div>
+        <div class="row">
+            <div class="col-lg-7 col-md-12 col-sm-12">
+                <!-- Contact form start -->
+                <div class="contact-form">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post" asp-action="index" asp-controller="contact">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-floating mb-4">
+                                            <input asp-for="FullName" value="@appUser.Fullname" class="form-control" id="floating-full-name" placeholder="Full Name">
+                                            <label asp-for="FullName" for="floating-full-name">Full Name</label>
+                                            <span asp-validation-for="FullName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-floating mb-4">
+                                            <input asp-for="Email" value="@appUser.Email" class="form-control" id="floating-email-address" placeholder="Email Address">
+                                            <label asp-for="Email" for="floating-email-address">Email address</label>
+                                            <span asp-validation-for="FullName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-floating mb-4">
+                                            <input asp-for="Subject" class="form-control" id="floating-subject" placeholder="Subject">
+                                            <label asp-for="Subject" for="floating-subject">Subject</label>
+                                            <span asp-validation-for="Subject" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-floating mb-4">
+                                            <input asp-for="PhoneNumber" value="@appUser.PhoneNumber" class="form-control" id="floating-phone-Number" placeholder="Phone Number">
+                                            <label asp-for="PhoneNumber" for="floating-phone-Number">Phone Number</label>
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-floating mb-4">
+                                            <textarea asp-for="Message" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                            <label asp-for="Message" for="floatingTextarea2">Comments</label>
+                                            <span asp-validation-for="Message" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="send-btn text-center">
+                                            <button type="submit" class="btn-md btn-theme btn-4 btn-7">Send Message</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        }else{
+                            <form method="post" asp-action="index" asp-controller="contact">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-floating mb-4">
+                                            <input asp-for="FullName" class="form-control" id="floating-full-name" placeholder="Full Name">
+                                            <label asp-for="FullName" for="floating-full-name">Full Name</label>
+                                            <span asp-validation-for="FullName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-floating mb-4">
+                                            <input asp-for="Email" class="form-control" id="floating-email-address" placeholder="Email Address">
+                                            <label asp-for="Email" for="floating-email-address">Email address</label>
+                                            <span asp-validation-for="FullName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-floating mb-4">
+                                            <input asp-for="Subject" class="form-control" id="floating-subject" placeholder="Subject">
+                                            <label asp-for="Subject" for="floating-subject">Subject</label>
+                                            <span asp-validation-for="Subject" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-floating mb-4">
+                                            <input asp-for="PhoneNumber" class="form-control" id="floating-phone-Number" placeholder="Phone Number">
+                                            <label asp-for="PhoneNumber" for="floating-phone-Number">Phone Number</label>
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-floating mb-4">
+                                            <textarea asp-for="Message" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                            <label asp-for="Message" for="floatingTextarea2">Comments</label>
+                                            <span asp-validation-for="Message" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="send-btn text-center">
+                                            <button type="submit" class="btn-md btn-theme btn-4 btn-7">Send Message</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                </div>
+                <!-- Contact form end -->
+            </div>
+            <div class="col-lg-5 col-md-12 col-sm-12">
+                <!-- Contact details start -->
+                <div class="contact-details">
+                    <div class="contact-item d-flex mb-3">
+                        <div class="icon">
+                            <i class="fa fa-map-marker"></i>
+                        </div>
+                        <div class="contant">
+                            <h4>Office Address</h4>
+                            <p>@settings.FirstOrDefault(x=>x.Key == "Address")?.Value</p>
+                        </div>
+                    </div>
+                    <div class="contact-item d-flex mb-3">
+                        <div class="icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="contant">
+                            <h4>Phone Number</h4>
+                            <p>
+                                <a href="tel:@settings.FirstOrDefault(x=>x.Key == "Phone")?.Value">Office: @settings.FirstOrDefault(x=>x.Key == "Phone")?.Value</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="contact-item d-flex mb-3">
+                        <div class="icon">
+                            <i class="fa fa-envelope"></i>
+                        </div>
+                        <div class="contant">
+                            <h4>Email Address</h4>
+                            <p>
+                                <a href="mailto:@settings.FirstOrDefault(x=>x.Key == "Email")?.Value">@settings.FirstOrDefault(x=>x.Key == "Email")?.Value</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="contact-item d-flex">
+                        <div class="icon">
+                            <i class="fa fa-fax"></i>
+                        </div>
+                        <div class="contant">
+                            <h4>Fax</h4>
+                            <p>
+                                <a href="tel:@settings.FirstOrDefault(x=>x.Key == "Fax")?.Value">Fax: @settings.FirstOrDefault(x=>x.Key == "Fax")?.Value</a>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Contact details end -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact-1 end -->

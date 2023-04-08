@@ -1,0 +1,44 @@
+﻿@model HomeViewModel
+@foreach (var item in Model.Rooms)
+{
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="hotel-box">
+            <!-- Photo thumbnail -->
+            <div class="photo-thumbnail">
+                <div class="photo">
+                    <img style="height:275px;width:415px" src="~/uploads/rooms/@item.RoomImages.FirstOrDefault(x=>x.IsPoster==true).ImageUrl" alt="photo" class="img-fluid w-100">
+                    <a asp-action="detail" asp-controller="room" asp-area="" asp-route-id="@item.Id">
+                        <span class="blog-one__plus"></span>
+                    </a>
+                </div>
+                <div class="pr">
+                    <div style="font-size: 15px;" class="rating">
+                        <i class="fa fa-eye">@item.ViewCount</i>
+                    </div>
+                    $@item.AdultPrice.ToString("0.00")/Night
+                </div>
+            </div>
+            <!-- Detail -->
+            <div class="detail clearfix">
+                <h3>
+                    <a asp-action="detail" asp-controller="room" asp-area="" asp-route-id="@item.Id">@item.Name</a>
+                </h3>
+                <p class="location">
+                    <a asp-action="detail" asp-controller="room" asp-area="" asp-route-id="@item.Id">
+                        <i class="fa fa-map-marker"></i>@item.Location
+                    </a>
+                </p>
+                <div class="fecilities">
+                    <ul>
+                        @foreach (RoomFeature roomFeature in item.RoomFeatures.Where(x=>x.RoomId==item.Id).Take(6))
+                        {
+                            <li>
+                                @Html.Raw(roomFeature.Feature.Icon) @roomFeature.Feature.Name
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,157 @@
+﻿@model BlogViewModel
+@inject Alpha_Hotel_Project.Services.UserSettingService service;
+@{
+    AppUser appUser = await service.GetUser();
+    List<Setting> settings = await service.GetSettingsAsnyc();
+}
+@await Html.PartialAsync("_TopHeaderPartialView")
+@await Html.PartialAsync("_MainHeaderPartialView")
+<!-- Sub banner start -->
+<div class="sub-banner">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1>Blog </h1>
+        </div>
+        <nav class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Home</a></li>
+                <li class="breadcrumb-item active">Blog </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Sub Banner end -->
+<!-- Blog body start -->
+<div class="blog-body content-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12 col-sm-12">
+                <!-- Blog box start -->
+                @foreach (var item in Model.Blogs)
+                {
+                    <div class="blog-1">
+                        <div class="blog-image">
+                            <img style="height:570px;width:850px" src="~/uploads/blogs/@item.ImageUrl" alt="img-2" class="img-fluid w-100">
+                            <div class="date-box">
+                                <span>@item.CreateDate.ToString("dd")</span>@item.CreateDate.ToString("MMM")
+                            </div>
+                        </div>
+                        <div class="detail">
+                            <div class="post-meta clearfix">
+                                <ul>
+                                    <li class="float-right mr-0"><a href="#"><i class="fa fa-commenting-o"></i></a>@item.BlogComments.Count</li>
+                                    <li class="float-right"><a href="#"><i class="fa fa-eye"></i></a>@item.ViewCount</li>
+                                </ul>
+                            </div>
+                            <h3>
+                                <a asp-action="blogdetail" asp-controller="blog" asp-route-id="@item.Id">@item.Title</a>
+                            </h3>
+                            <p>@item.Quote</p>
+                        </div>
+                    </div>
+                }
+                <!-- Blog box end -->
+                <!-- Page navigation start -->
+                <div class="pagination-box">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            @if (Model.Blogs.HasPrevious)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-route-page="@(Model.Blogs.ActivePage-1)"><i class="fa fa-angle-left"></i></a>
+                                </li>
+                            }
+                            @for (int i = 1; i <= Model.Blogs.TotalPageCount; i++)
+                            {
+                                <li class="page-item"><a class="page-link  @((Model.Blogs.ActivePage==i)? "active" : "") " asp-route-page="@i">@i</a></li>
+                            }
+                            @if (Model.Blogs.HasNext)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-route-page="@((Model.Blogs.ActivePage+1))">
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+                <!-- Page navigation end -->
+            </div>
+            <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="sidebar">
+                    <!-- Recent News start -->
+                    <div class="sidebar-widget recent-news">
+                        <div class="main-title-2">
+                            <h1>Recent Posts</h1>
+                        </div>
+                        @foreach (var item in Model.RecentBlogs)
+                        {
+                            <div class="recent-news-item mb-3">
+                                <div class="thumb">
+                                    <a asp-action="blogdetail" asp-controller="blog" asp-route-id="@item.Id">
+                                        <img style="height:50px;width:80px" src="~/uploads/blogs/@item.ImageUrl" alt="blog-img">
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <h3 class="media-heading">
+                                        <a asp-action="blogdetail" asp-controller="blog" asp-route-id="@item.Id">@item.Title</a>
+                                    </h3>
+                                    <div class="listing-post-meta">
+                                        <i class="fa fa-eye"></i>@item.ViewCount | <a href="#"><i class="fa fa-calendar"></i> @item.CreateDate</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <!-- Category posts start -->
+                    <div class="sidebar-widget category-posts">
+                        <div class="main-title-2">
+                            <h1>Category</h1>
+                        </div>
+                        <ul class="list-unstyled list-cat">
+                            @foreach (var item in Model.BlogCategories)
+                            {
+                                <li>@item.Name <span>(@item.Blogs.Count)</span></li>
+                            }
+                        </ul>
+                    </div>
+                    <!-- Social media start -->
+                    <div class="social-media sidebar-widget clearfix">
+                        <div class="main-title-2">
+                            <h1>Social Media</h1>
+                        </div>
+                        <ul class="social-list">
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "TwitterUrl")?.Value" class="twitter-bg"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "FacebookUrl")?.Value" class="facebook-bg"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "PinterestUrl")?.Value" class="rss-bg"><i class="fa fa-rss"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "GoogleUrl")?.Value" class="google-bg"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "LinkedinUrl")?.Value" class="linkedin-bg"><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                    <!-- Recent comments start -->
+                    <div class="sidebar-widget recent-comments">
+                        <div class="main-title-2">
+                            <h1>Recent comments</h1>
+                        </div>
+                        @foreach (var item in Model.RecentBlogComment)
+                        {
+                            <div class="recent-comments-item mb-4">
+                                <div class="thumb">
+                                    <a href="#">
+                                        <img src="~/uploads/commentuser/default-user-icon-2.jpg" alt="imagecomment">
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <p>@item.Comment </p>
+                                    <span>By <b>@item.FullName</b></span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Blog body end -->

@@ -1,0 +1,491 @@
+﻿@using Alpha_Hotel_Project.Enums
+@model OrderViewModel
+@inject Alpha_Hotel_Project.Services.UserSettingService service;
+@{
+    List<Setting> settings = await service.GetSettingsAsnyc();
+    AppUser appUser = await service.GetUser();
+}
+<!-- Top header start -->
+@await Html.PartialAsync("_TopHeaderPartialView")
+<!-- Top header end -->
+<!-- Main header start -->
+@await Html.PartialAsync("_MainHeaderPartialView")
+<!-- Main header end -->
+<!-- Rooms banner start -->
+<div class="rooms-banner">
+    <div class="container-fluid">
+        <div class="featured-slider row slide-box-btn slider" data-slick='{"slidesToShow": 3, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 2}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
+            @foreach (var item in Model.Room.RoomImages.Where(x => x.IsPoster == false))
+            {
+                <div class="slide slide-box">
+                    <div class="banner-img">
+                        <img src="~/uploads/rooms/@item.ImageUrl" alt="banner" class="img-fluid bp">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Rooms banner end -->
+<!-- room info heading start -->
+<div class="room-info-heading">
+    <div class="container">
+        <div class="room-info-heading-inner">
+            <div class="row g-0">
+                <div class="col-xl-3 col-lg-4 col-md-4">
+                    <div class="photo">
+                        <div class="home">
+                            <img style="height:245px;width:300px" class="img-fluid" src="~/uploads/rooms/@Model.Room.RoomImages.Where(x=>x.IsPoster==true).FirstOrDefault()?.ImageUrl" alt="image">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-8 col-md-8 align-self-center">
+                    <div class="content">
+                        <h2><a href="#">@Model.Room.Name</a> <span class="pull-right">$@Model.Room.AdultPrice<small>/Night</small></span></h2>
+                        <ul class="facilities-list clearfix">
+                            @foreach (var roomFeature in Model.RoomFeatures)
+                            {
+                                <li>
+                                    @Html.Raw(@roomFeature.Feature.Icon) @roomFeature.Feature.Name
+                                </li>
+                            }
+                        </ul>
+                        <p style="margin-bottom:15px"><i class="fa fa-users"></i>  @Model.Room.Capacity</p>
+                        <p><i class="fa fa-map-marker"></i> @Model.Room.Location</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- room info heading end -->
+<!-- Rooms details page start -->
+<div style="padding-top:0px" class="content-area-17 rooms-details-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12 col-sm-12">
+                <!-- Rooms details section start -->
+                <div class="rooms-detail-slider ">
+
+                    <!-- Rooms description start -->
+                    <div class="rooms-description mb-50">
+                        <!-- Title -->
+                        <h3>Rooms Description</h3>
+                        <!-- paragraph -->
+                        <p class="mb-0">@Model.Room.Descreption</p>
+                    </div>
+                    <!-- Rooms description end -->
+                    <!-- Amenities start -->
+                    <div class="amenities mb-30">
+                        <h3>Amenities</h3>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <ul class="condition">
+                                    @foreach (var item in Model.RoomFeatures)
+                                    {
+                                        <li>
+                                            @Html.Raw(@item.Feature.Icon) @item.Feature.Name
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Amenities end -->
+                    <!-- House reles start -->
+                    <div class="house-rules mb-50">
+                        <h3>House Rules</h3>
+                        <ul>
+                            @foreach (var item in Model.HouseRules)
+                            {
+                                <li><i class="fa fa-hand-o-right"></i> @item.Name</li>
+                            }
+                        </ul>
+                    </div>
+                    <!-- House reles end -->
+                    <div class="cancellation mb-50">
+                        <h3>Cancellation</h3>
+                        <p>@settings.FirstOrDefault(x=>x.Key=="Cancellation")?.Value</p>
+                    </div>
+                    <div class="similar-rooms">
+                        <div class="main-title-2">
+                            <h1>Popular Rooms</h1>
+                        </div>
+                        <div class="row">
+                            @foreach (var item in Model.PopularRooms)
+                            {
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="hotel-box">
+                                        <!-- Photo thumbnail -->
+                                        <div class="photo-thumbnail">
+                                            <div class="photo">
+                                                <img style="height:347px;width:417px" src="~/uploads/rooms/@item.RoomImages.Where(x=>x.IsPoster==true).FirstOrDefault().ImageUrl" alt="photo" class="img-fluid w-100">
+                                                <a asp-action="detail" asp-controller="room" asp-route-id="@item.Id">
+                                                    <span class="blog-one__plus"></span>
+                                                </a>
+                                            </div>
+                                            <div class="pr">
+                                                <div style="font-size: 15px;" class="rating">
+                                                    <i class="fa fa-eye">@item.ViewCount</i>
+                                                </div>
+                                                $@item.AdultPrice/Night
+                                            </div>
+                                        </div>
+                                        <!-- Detail -->
+                                        <div class="detail clearfix">
+                                            <h3>
+                                                <a asp-action="detail" asp-controller="room" asp-route-id="@item.Id">@item.Name</a>
+                                            </h3>
+                                            <p class="location">
+                                                <a asp-action="detail" asp-controller="room" asp-route-id="@item.Id">
+                                                    <i class="fa fa-map-marker"></i>@item.Location
+                                                </a>
+                                            </p>
+                                            <div class="fecilities">
+                                                <ul>
+                                                    @foreach (var feature in Model.RoomFeatures)
+                                                    {
+                                                        <li>
+                                                            @Html.Raw(@feature.Feature.Icon) @feature.Feature.Name
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <!-- Course details section end -->
+            </div>
+            <div class="col-lg-4 col-md-12 col-sm-12">
+                <!-- Sidebar start -->
+                <div class="sidebar">
+                    <!-- Search area box 3 start -->
+                    <div class="sidebar-widget search-area-box-3 clearfix">
+                        <h3>Check Availability</h3>
+                        <h4 class="price">$@Model.Room.AdultPrice/Night</h4>
+                        <div class="search-contents">
+                            @if (User.Identity.IsAuthenticated is true)
+                            {
+                                <form method="post" asp-action="BookingSystem" asp-controller="room" asp-route-id="@Model.Room.Id">
+                                    <div class="search-your-details">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group text-danger">
+                                                    <div asp-validation-summary="ModelOnly" style="text-color:red" class="text-danger"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group">
+                                                    @*<input asp-for="StartRentDate" class="btn-default datepicker" placeholder="Check In">
+                                                <label class="btn-default datepicker" asp-for="StartRentDate"></label>
+                                                <span asp-validation-for="StartRentDate" style="color:red"></span>*@
+                                                    <label asp-for="StartRentDate">Start Date</label>
+                                                    <input asp-for="StartRentDate" value="@DateTime.Now" />
+                                                    <span asp-validation-for="StartRentDate"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group">
+                                                    @*<input asp-for="EndRentDate" class="btn-default datepicker" placeholder="Check Out">
+                                                <span asp-validation-for="EndRentDate" style="color:red"></span>*@
+                                                    <label asp-for="EndRentDate">End Date</label>
+                                                    <input asp-for="EndRentDate" value="@DateTime.Now" class="form-controller">
+                                                    <span asp-validation-for="EndRentDate"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <span asp-validation-for="AdultCount" class="text-danger"></span>
+                                                    <select asp-for="AdultCount" class="selectpicker search-fields">
+                                                        <option>Adult</option>
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <span asp-validation-for="ChildCount" class="text-danger"></span>
+                                                    <select asp-for="ChildCount" class="selectpicker search-fields">
+                                                        <option selected="selected">Child</option>
+                                                        <option>0</option>
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group firstname">
+                                                    <label asp-for="Fullname" class="form-label">Full Name</label>
+                                                    <input asp-for="Fullname" class="form-control" id="inputfirstname" placeholder="Full Name">
+                                                    <span asp-validation-for="Fullname" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group address-line-1">
+                                                    <label asp-for="Address" class="form-label">Address Line</label>
+                                                    <input asp-for="Address" class="form-control" id="inputaddress-line3" placeholder="Address Line">
+                                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group address-line-2">
+                                                    <label asp-for="City" class="form-label">City</label>
+                                                    <input asp-for="City" class="form-control" id="inputcity2" placeholder="City">
+                                                    <span asp-validation-for="City" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group address-line-2">
+                                                    <label asp-for="ZipCode" class="form-label">Zip/Post Code</label>
+                                                    <input asp-for="ZipCode" class="form-control" id="inputcode2" placeholder="Zip">
+                                                    <span asp-validation-for="ZipCode" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group address-line-2">
+                                                    <label asp-for="PhoneNumber" class="form-label">PhoneNumber</label>
+                                                    <input asp-for="PhoneNumber" class="form-control" id="inputcode2" placeholder="PhoneNumber">
+                                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group address-line-2">
+                                                    <label asp-for="eMail" class="form-label">eMail</label>
+                                                    <input asp-for="eMail" class="form-control" id="inputcode2" placeholder="eMail">
+                                                    <span asp-validation-for="eMail" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group country">
+                                                    <label asp-for="Country">Country</label>
+                                                    <select asp-for="Country">
+                                                        <option selected>Country</option>
+                                                        <option>United Kingdom</option>
+                                                        <option>Canada</option>
+                                                        <option>Australia</option>
+                                                        <option>France</option>
+                                                        <option>Spain</option>
+                                                        <option>Brazil</option>
+                                                        <option>Bhutan</option>
+                                                        <option>Bangladesh</option>
+                                                        <option>India</option>
+                                                    </select>
+                                                    <span asp-validation-for="Country" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-12 col-sm-6">
+                                                    <div class="form-group address-line-2">
+                                                        <label asp-for="Note" class="form-label">Note</label>
+                                                        <textarea asp-for="Note" class="form-control" id="inputcode2" placeholder="Note..."></textarea>
+                                                        <span asp-validation-for="Note" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group mb-0">
+                                                    <button type="submit" class="btn-md btn-theme btn-4 btn-7 w-100">Book Now</button>
+                                                </div>
+                                            </div>
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <div class="form-group">
+                                            </div>
+                                            <input type="hidden" value="@appUser.Id" asp-for="@Model.AppUserId">
+                                        </div>
+                                    </div>
+                                </form>
+                            }
+                            else
+                            {
+                                <form method="post" asp-action="BookingSystem" asp-controller="room" asp-route-id="@Model.Room.Id">
+                                    <div class="search-your-details">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group text-danger">
+                                                    <div asp-validation-summary="ModelOnly" style="text-color:red" class="text-danger"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group">
+                                                    @*<input asp-for="StartRentDate" class="btn-default datepicker" placeholder="Check In">
+                                                <label class="btn-default datepicker" asp-for="StartRentDate"></label>
+                                                <span asp-validation-for="StartRentDate" style="color:red"></span>*@
+                                                    <label asp-for="StartRentDate">Start Date</label>
+                                                    <input asp-for="StartRentDate" value="@DateTime.Now" />
+                                                    <span asp-validation-for="StartRentDate" class="text-danger"></span>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group">
+                                                    @*<input asp-for="EndRentDate" class="btn-default datepicker" placeholder="Check Out">
+                                                <span asp-validation-for="EndRentDate" style="color:red"></span>*@
+                                                    <label asp-for="EndRentDate">End Date</label>
+                                                    <input asp-for="EndRentDate" value="@DateTime.Now" class="form-controller">
+                                                    <span asp-validation-for="EndRentDate" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label asp-for="AdultCount">Adult</label>
+                                                    <span asp-validation-for="AdultCount" class="text-danger"></span>
+                                                    <select asp-for="AdultCount" class="selectpicker search-fields">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label asp-for="ChildCount">Child</label>
+                                                    <span asp-validation-for="ChildCount" class="text-danger"></span>
+                                                    <select asp-for="ChildCount" class="selectpicker search-field">
+                                                        <option>Child</option>
+                                                        <option>0</option>
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group firstname">
+                                                    <label asp-for="Fullname" class="form-label">Full Name</label>
+                                                    <input asp-for="Fullname" class="form-control" id="inputfirstname" placeholder="Full Name">
+                                                    <span asp-validation-for="Fullname" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group address-line-1">
+                                                    <label asp-for="Address" class="form-label">Address Line</label>
+                                                    <input asp-for="Address" class="form-control" id="inputaddress-line3" placeholder="Address Line">
+                                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group address-line-2">
+                                                    <label asp-for="City" class="form-label">City</label>
+                                                    <input asp-for="City" class="form-control" id="inputcity2" placeholder="City">
+                                                    <span asp-validation-for="City" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group address-line-2">
+                                                    <label asp-for="ZipCode" class="form-label">Zip/Post Code</label>
+                                                    <input asp-for="ZipCode" class="form-control" id="inputcode2" placeholder="Zip">
+                                                    <span asp-validation-for="ZipCode" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group address-line-2">
+                                                    <label asp-for="PhoneNumber" class="form-label">PhoneNumber</label>
+                                                    <input asp-for="PhoneNumber" class="form-control" id="inputcode2" placeholder="PhoneNumber">
+                                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group address-line-2">
+                                                    <label asp-for="eMail" class="form-label">eMail</label>
+                                                    <input asp-for="eMail" class="form-control" id="inputcode2" placeholder="eMail">
+                                                    <span asp-validation-for="eMail" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-6">
+                                                <div class="form-group country">
+                                                    <label asp-for="Country">Country</label>
+                                                    <select asp-for="Country">
+                                                        <option>Country</option>
+                                                        <option>United Kingdom</option>
+                                                        <option>Canada</option>
+                                                        <option>Australia</option>
+                                                        <option>France</option>
+                                                        <option>Spain</option>
+                                                        <option>Brazil</option>
+                                                        <option>Bhutan</option>
+                                                        <option>Bangladesh</option>
+                                                        <option>India</option>
+                                                    </select>
+                                                    <span asp-validation-for="Country" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-12 col-sm-6">
+                                                    <div class="form-group address-line-2">
+                                                        <label asp-for="Note" class="form-label">Note</label>
+                                                        <textarea asp-for="Note" class="form-control" id="inputcode2" placeholder="Note..."></textarea>
+                                                        <span asp-validation-for="Note" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group mb-0">
+                                                    <button type="submit" class="btn-md btn-theme btn-4 btn-7 w-100">Book Now</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                    <!-- Recent News start -->
+                    <div class="sidebar-widget recent-news">
+                        <div class="main-title-2">
+                            <h1>Recent Rooms</h1>
+                        </div>
+                        @foreach (var item in Model.RecentRooms)
+                        {
+                            <div class="recent-news-item mb-3">
+                                <div class="thumb">
+                                    <a asp-action="detail" asp-controller="room" asp-route-id="@item.Id">
+                                        <img style="height:50px;width:80px" src="~/uploads/rooms/@item.RoomImages.Where(x=>x.IsPoster==true).FirstOrDefault().ImageUrl" alt="room-img">
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <h3 class="media-heading">
+                                        <a asp-action="detail" asp-controller="room" asp-route-id="@item.Id">@item.Name</a>
+                                    </h3>
+                                    <div class="listing-post-meta">
+                                        <i class="fa fa-money"></i>@item.AdultPrice.ToString("0.00")$ | <a href="#"><i class="fa fa-calendar"></i>@item.RoomCreationDate</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <!-- Social media start -->
+                    <div class="social-media sidebar-widget clearfix">
+                        <!-- Main Title 2 -->
+                        <div class="main-title-2">
+                            <h1>Social Media</h1>
+                        </div>
+                        <!-- Social list -->
+                        <ul class="social-list">
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "TwitterUrl")?.Value" class="twitter-bg"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "FacebookUrl")?.Value" class="facebook-bg"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "PinterestUrl")?.Value" class="rss-bg"><i class="fa fa-rss"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "GoogleUrl")?.Value" class="google-bg"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "LinkedinUrl")?.Value" class="linkedin-bg"><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Sidebar end -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Rooms details page end -->
+<!-- Partners 2 start -->
+@await Html.PartialAsync("_PartnerPartialView" , Model.Partners)
+<!-- Partners 2 end -->

@@ -1,0 +1,28 @@
+﻿@model List<Partner>
+<!-- Partners 2 start -->
+<div class="partners-2 comon-slick">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-md-12">
+                <div class="left-info">
+                    <h2 style="font-size:40px;margin-bottom:0px">Our Partners</h2>
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-12">
+                <div class="partners-inner">
+                    <div class="slick row comon-slick-inner" data-slick='{"slidesToShow": 3, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 2}}, {"breakpoint": 768,"settings":{"slidesToShow": 2}}]}'>
+                        @foreach (var item in Model)
+                        {
+                            <div class="item slide-box">
+                                <div class="partners-box">
+                                    <img src="~/uploads/partner/@item.Image" alt="brand">
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Partners 2 end -->

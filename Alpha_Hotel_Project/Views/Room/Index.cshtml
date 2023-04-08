@@ -1,0 +1,93 @@
+﻿@model RoomViewModel
+@await Html.PartialAsync("_TopHeaderPartialView")
+@await Html.PartialAsync("_MainHeaderPartialView")
+<!-- Sub banner start -->
+<div class="sub-banner">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1>Rooms </h1>
+        </div>
+        <nav class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Rooms </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Sub Banner end -->
+<!-- Rooms section start -->
+<div class="rooms-section content-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                    @foreach (var item in Model.Rooms)
+                    {
+                        <div class="row hotel-box-list-2 hbl-2 g-0">
+                            <div class="col-xl-4 col-lg-5 col-md-5 col-sm-12">
+                                <div class="photo-thumbnail">
+                                    <div class="photo">
+                                        <img style="height:360px;accent-color:430px" src="~/uploads/rooms/@item.RoomImages.Where(x=>x.IsPoster==true).FirstOrDefault().ImageUrl" alt="room-photo" class="img-fluid w-100">
+                                        <a asp-action="detail" asp-controller="room" asp-route-id="@item.Id">
+                                            <span class="blog-one__plus"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 col-lg-7 col-md-7 col-sm-12">
+                            <div class="detail">
+                                <div class="heading clearfix">
+                                    <h3 class="title">
+                                        <a asp-action="detail" asp-controller="room" asp-route-id="@item.Id">@item.Name</a>
+                                        <span class="price">$@item.AdultPrice.ToString("0.00")/Night</span>
+                                    </h3>
+                                </div>
+                                <p>@item.Descreption.Substring(0,(item.Descreption.Length>251 ? 250 : item.Descreption.Length))</p>
+                                <ul class="fecilities clearfix">
+                                    @foreach (var feature in Model.RoomFeatures.Where(x=>x.RoomId==item.Id))
+                                    {
+                                        <li>
+                                            @Html.Raw(feature.Feature.Icon)
+                                            @feature.Feature.Name
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+                    }
+            </div>
+        </div>
+
+        <!-- Page navigation start -->
+        <div class="pagination-box">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    @if (Model.Rooms.HasPrevious)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-route-page="@(Model.Rooms.ActivePage-1)"><i class="fa fa-angle-left"></i></a>
+                        </li>
+                    }
+                    @for (int i = 1; i <= Model.Rooms.TotalPageCount; i++)
+                    {
+                        <li class="page-item"><a class="page-link  @((Model.Rooms.ActivePage==i)? "active" : "") " asp-route-page="@i">@i</a></li>
+                    }
+                    @if (Model.Rooms.HasNext)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-route-page="@((Model.Rooms.ActivePage+1))">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+        <!-- Page navigation end -->
+    </div>
+</div>
+<!-- Rooms  section end -->
+<!-- Partners 2 start -->
+@await Html.PartialAsync("_PartnerPartialView" , Model.Partners)
+<!-- Partners 2 end -->

@@ -1,0 +1,88 @@
+﻿@using Alpha_Hotel_Project.Enums
+@model Room
+
+<div class="col-sm-12 pt-4 px-4">
+    <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">Room Create</h6>
+        <form method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <label asp-for="Name" class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                    <input asp-for="Name" class="form-control" placeholder="Name...">
+                </div>
+                <span asp-validation-for="Name" style="color:red"></span>
+
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Location" class="col-sm-2 col-form-label">Location</label>
+                <div class="col-sm-10">
+                    <input asp-for="Location" class="form-control" placeholder="Location...">
+                </div>
+                <span asp-validation-for="Location" style="color:red"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Capacity" class="col-sm-2 col-form-label">Capacity</label>
+                <div class="col-sm-10">
+                    <input asp-for="Capacity" class="form-control" placeholder="Capacity...">
+                </div>
+                <span asp-validation-for="Capacity" style="color:red"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="AdultPrice" class="col-sm-2 col-form-label">AdultPrice</label>
+                <div class="col-sm-10">
+                    <input asp-for="AdultPrice" class="form-control" placeholder="AdultPrice...">
+                </div>
+                <span asp-validation-for="AdultPrice" style="color:red"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="ChildPrice" class="col-sm-2 col-form-label">ChildPrice</label>
+                <div class="col-sm-10">
+                    <input asp-for="ChildPrice" class="form-control" placeholder="ChildPrice...">
+                </div>
+                <span asp-validation-for="ChildPrice" style="color:red"></span>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="CategoryId" class="col-sm-2 col-form-label">Category</label>
+                <select class="form-select mb-3" aria-label="Default select example" asp-for="CategoryId">
+                    <option selected="">Select category</option>
+                    @foreach (var item in ViewBag.Categories)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" style="color:red"></span>
+
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Type" class="control-label"></label>
+                <select asp-for="Type"
+                        class="form-select mb-3" aria-label="Default select example"
+                        asp-items="Html.GetEnumSelectList<RoomType>()">
+                    <option>Select type ...</option>
+                </select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImageFiles" class="form-label">ImageFiles</label>
+                <input class="form-control" asp-for="ImageFiles" placeholder="ImageFiles...">
+                <span asp-validation-for="ImageFiles" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PosterImageFile" class="form-label">PosterImageFile</label>
+                <input class="form-control" asp-for="PosterImageFile" placeholder="PosterImageFile...">
+                <span asp-validation-for="PosterImageFile" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+
+                <select class="form-select" asp-for="RoomFeaturesIds" id="floatingSelect" aria-label="Floating label select example" asp-items="@(new SelectList(ViewBag.Features, "Id", "Name"))"></select>
+            </div>
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Descreption write here" asp-for="Descreption" style="height: 150px;"></textarea>
+                <label asp-for="Descreption">Descreption...</label>
+                <span asp-validation-for="Descreption" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>

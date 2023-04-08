@@ -1,0 +1,74 @@
+﻿@model PaginatedList<Order>
+@{
+    int count = 0;
+}
+@await Html.PartialAsync("_TopHeaderPartialView")
+@await Html.PartialAsync("_MainHeaderPartialView")
+<div class="sub-banner">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1>Profile</h1>
+        </div>
+        <nav class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Home</a></li>
+                <li class="breadcrumb-item active">Your Finished Orders</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="container" style="min-height:50vh;    padding-top: 20px;">
+    <a style="float:right;font-size:15px;color:#ffff;border-radius:120px;padding: 10px 20px;" class="btn btn-sm  btn-primary m-2" asp-action="profile" asp-controller="account"> <i class="fa fa-reply-all"></i> </a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">FullName</th>
+                <th scope="col">CreateDate</th>
+                <th scope="col">OrderStatus</th>
+                <th scope="col">TotalPrice</th>
+            </tr>
+        </thead>
+        <tbody style="vertical-align: middle;">
+            @foreach (var item in Model)
+            {
+                count++;
+                <tr>
+                    <th scope="row">@count</th>
+                    <td>@item.OrderItem.Fullname</td>
+                    <td>@item.OrderItem.CreateDate.ToString("d")</td>
+                    <td>
+                        <span style="font-size:15px;padding:5px 16px;" class="btn btn-@(item.OrderStatus == Alpha_Hotel_Project.Enums.OrderStatus.Pending ? "secondary"
+                            :(item.OrderStatus == Alpha_Hotel_Project.Enums.OrderStatus.Accepted ? "success"
+                            : "danger"))  rounded-pill m-2">@item.OrderStatus</span>
+                    </td>
+                    <td>@item.OrderItem.TotalPrice.ToString("0.00")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="pagination-box">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            @if (Model.HasPrevious)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-route-page="@(Model.ActivePage-1)"><i class="fa fa-angle-left"></i></a>
+                </li>
+            }
+            @for (int i = 1; i <= Model.TotalPageCount; i++)
+            {
+                <li class="page-item"><a class="page-link  @((Model.ActivePage==i)? "active" : "") " asp-route-page="@i">@i</a></li>
+            }
+            @if (Model.HasNext)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-route-page="@((Model.ActivePage+1))">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

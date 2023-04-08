@@ -1,0 +1,39 @@
+﻿@model UserDetailViewModel
+@{
+    ViewData["Title"] = "Detail";
+}
+<div class="container-fluid pt-4 px-4" style="min-height:50vh">
+    <h2 style="margin-bottom: 1.5rem !important;">Detail:</h2>
+    <div>
+        <div class="card bg-light rounded h-100 p-4" style="max-width: 100vw;">
+            <div class="card-body" style="max-width: 100vw;">
+                <p style="font-weight:bold">UserName :     @Model.User.UserName</p>
+                <p style="font-weight:bold">Create Date :  @Model.User.CreateDate </p>
+                <p style="font-weight:bold">FullName :     @Model.User.Fullname</p>
+                <p style="font-weight:bold">Email :        @Model.User.Email</p>
+                <p style="font-weight:bold">Phone Number : @Model.User.PhoneNumber</p>
+                <p style="font-weight:bold">
+                    User Status : <span style="font-size:15px;padding:9px 16px;" class="btn btn-@(Model.User.IsActive == true ? "success"
+                        :"danger") rounded-pill m-2">@(Model.User.IsActive ? "Active" : "Blocked")</span>
+                </p>
+            </div>
+            <h6 style="padding:10px;color:#36338f">User Roles : </h6>
+            <ul style="padding:30px" class="list-group list-group-flush">
+                @foreach (var item in Model.UserRoles)
+                {
+                    <li style="font-weight:bold"> @item</li>
+                }
+            </ul>
+            <h6 style="padding:20px;color:#36338f">Actions : </h6>
+            <div class="card-body">
+                @if (Model.User.IsActive)
+                {
+                    <a style="width:45px;height:45px" class="btn btn-sm btn-sm-square btn-outline-danger m-2" asp-action="blocked" asp-route-id="@Model.User.Id" asp-controller="user"> <i style="font-size:20px" class="fa fa-remove fa-bold"></i> </a>
+                }
+                else {
+                    <a style="width:45px;height:45px" class="btn btn-sm btn-sm-square btn-outline-success m-2" asp-action="actived" asp-route-id="@Model.User.Id" asp-controller="user"> <i style="font-size:20px" class="fa fa-reply-all fa-bold"></i> </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

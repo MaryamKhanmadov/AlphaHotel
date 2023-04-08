@@ -1,0 +1,297 @@
+﻿@model BlogViewModel
+@inject Alpha_Hotel_Project.Services.UserSettingService service;
+@{
+    AppUser appUser = await service.GetUser();
+    List<Setting> settings = await service.GetSettingsAsnyc();
+}
+@await Html.PartialAsync("_TopHeaderPartialView")
+@await Html.PartialAsync("_MainHeaderPartialView")
+<!-- Main header end -->
+<!-- Sidenav start -->
+<!-- Sidenav end -->
+<!-- Sub banner start -->
+<div class="sub-banner">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1>Blog Details</h1>
+        </div>
+        <nav class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Home</a></li>
+                <li class="breadcrumb-item active">Blog Details</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Sub Banner end -->
+<!-- Blog body start -->
+<div class="blog-body content-area-15">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12 col-sm-12">
+                <div class="blog-1 blog-big mb-50">
+                    <div class="blog-image">
+                        <img style="height:570px;width:850px" src="~/uploads/blogs/@Model.Blog.ImageUrl" alt="img-2" class="img-fluid w-100">
+                        <div class="date-box">
+                            <span>@Model.Blog.CreateDate.ToString("dd")</span>@Model.Blog.CreateDate.ToString("MMM")
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="post-meta clearfix">
+                            <ul>
+                                <li class="float-right mr-0"><a href="#"><i class="fa fa-commenting-o"></i></a>@Model.Blog.BlogComments.Count</li>
+                                <li class="float-right"><a href="#"><i class="fa fa-eye"></i></a>@Model.Blog.ViewCount</li>
+                            </ul>
+                        </div>
+                        <h3>
+                            <a asp-action="detail" asp-controller="blog" asp-area="" asp-route-id="@Model.Blog.Id">@Model.Blog.Title</a>
+                        </h3>
+                        <p>@Model.Blog.Descreption</p>
+                        <br>
+                        <blockquote>
+                            @Model.Blog.Quote
+                        </blockquote>
+                        <h3>@Model.Blog.SubHeading</h3>
+                        <P>@Model.Blog.SubHeadingDescreption </P>
+                        <div class="row clearfix tag-shere social-media sidebar-widget clearfix">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <!-- Blog Share start -->
+                                <div class="tags-box hidden-mb-10">
+                                    <h2>Share</h2>
+                                    <ul class="social-list">
+                                        <li>
+                                            <a href="@Model.Blog.FacebookUrl" class="facebook">
+                                                <i class="fa fa-facebook"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="@Model.Blog.TwitterUrl" class="twitter">
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="@Model.Blog.GoogleUrl" class="google">
+                                                <i class="fa fa-google"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="@Model.Blog.LinkedinUrl" class="linkedin">
+                                                <i class="fa fa-linkedin"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="@Model.Blog.PinterestUrl" class="rss">
+                                                <i class="fa fa-rss"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Blog Share end -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comments section start -->
+                <div class="comments-section">
+                    <!-- Main Title 2 -->
+                    <div class="main-title-2">
+                        <h1>Comments Section</h1>
+                    </div>
+
+                    <ul class="comments mb-50">
+                        @foreach (var item in Model.BlogComments)
+                        {
+                            <li>
+                                <div class="comment">
+                                    <div class="comment-author">
+                                        <a href="#">
+                                            <img src="~/uploads/commentuser/default-user-icon-2.jpg" alt="userDefaultImage">
+                                        </a>
+                                    </div>
+                                    <div class="comment-content">
+                                        <div class="comment-meta">
+                                            <div class="comment-meta-author">
+                                                @item.FullName
+                                            </div>
+                                            <div class="comment-meta-date">
+                                                <span>@item.MessageTime.ToString("t") @item.MessageTime.ToString("d")</span>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="comment-body">
+                                            <p>@item.Comment</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <!-- Comments section end -->
+                <!-- Contact 2 start -->
+                <div class="contact-2 c-mb">
+                    <div class="main-title-2">
+                        <h1>Leave a Comment</h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <!-- Contact form start -->
+                            @if (User.Identity.IsAuthenticated is true)
+                            {
+                                <div class="contact-form">
+                                    <form asp-action="BlogDetail" asp-controller="blog" method="post" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group name">
+                                                    <input asp-for="@Model.BlogComment.FullName" value="@appUser.Fullname" class="form-control" placeholder="Fullname" aria-label="Full Name">
+                                                    <span asp-validation-for="@Model.BlogComment.FullName" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group email">
+                                                    <input asp-for="@Model.BlogComment.CommentEmail" value="@appUser.Email" class="form-control" placeholder="Email" aria-label="Email">
+                                                    <span asp-validation-for="@Model.BlogComment.CommentEmail" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12">
+                                                <div class="form-group message">
+                                                    <textarea class="form-control" asp-for="@Model.BlogComment.Comment" placeholder="Write message" aria-label="Write message"></textarea>
+                                                    <span asp-validation-for="@Model.BlogComment.Comment" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group email">
+                                                    <input type="hidden" asp-for="@Model.BlogComment.BlogId" value="@Model.Blog.Id">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12">
+                                                <div class="send-btn text-center">
+                                                    <button type="submit" class="btn-md btn-theme btn-4 btn-7">Send Message</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="contact-form">
+                                    <form asp-action="BlogDetail" asp-controller="blog" method="post" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group name">
+                                                    <input asp-for="@Model.BlogComment.FullName" class="form-control" placeholder="Fullname" aria-label="Full Name">
+                                                    <span asp-validation-for="@Model.BlogComment.FullName" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group email">
+                                                    <input asp-for="@Model.BlogComment.CommentEmail" class="form-control" placeholder="Email" aria-label="Email">
+                                                    <span asp-validation-for="@Model.BlogComment.CommentEmail" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12">
+                                                <div class="form-group message">
+                                                    <textarea class="form-control" asp-for="@Model.BlogComment.Comment" placeholder="Write message" aria-label="Write message"></textarea>
+                                                    <span asp-validation-for="@Model.BlogComment.Comment" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="form-group email">
+                                                    <input type="hidden" asp-for="@Model.BlogComment.BlogId" value="@Model.Blog.Id">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12">
+                                                <div class="send-btn text-center">
+                                                    <button type="submit" class="btn-md btn-theme btn-4 btn-7">Send Message</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            }
+                            <!-- Contact form end -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Contact-2 end -->
+            </div>
+            <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="sidebar">
+                    <!-- Recent News start -->
+                    <div class="sidebar-widget recent-news">
+                        <div class="main-title-2">
+                            <h1>Recent Posts</h1>
+                        </div>
+                        @foreach (var item in Model.RecentBlogs)
+                        {
+                            <div class="recent-news-item mb-3">
+                                <div class="thumb">
+                                    <a asp-action="blogdetail" asp-controller="blog" asp-route-id="@item.Id">
+                                        <img style="height:50px;width:80px" src="~/uploads/blogs/@item.ImageUrl" alt="blog-img">
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <h3 class="media-heading">
+                                        <a asp-action="blogdetail" asp-controller="blog" asp-route-id="@item.Id">@item.Title</a>
+                                    </h3>
+                                    <div class="listing-post-meta">
+                                        <i class="fa fa-eye"></i>@item.ViewCount | <a href="#"><i class="fa fa-calendar"></i> @item.CreateDate</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <!-- Category posts start -->
+                    <div class="sidebar-widget category-posts">
+                        <div class="main-title-2">
+                            <h1>Category</h1>
+                        </div>
+                        <ul class="list-unstyled list-cat">
+                            @foreach (var item in Model.BlogCategories)
+                            {
+                                <li>@item.Name <span>(@item.Blogs.Count)</span></li>
+                            }
+                        </ul>
+                    </div>
+                    <!-- Social media start -->
+                    <div class="social-media sidebar-widget clearfix">
+                        <div class="main-title-2">
+                            <h1>Social Media</h1>
+                        </div>
+                        <ul class="social-list">
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "TwitterUrl")?.Value" class="twitter-bg"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "FacebookUrl")?.Value" class="facebook-bg"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "PinterestUrl")?.Value" class="rss-bg"><i class="fa fa-rss"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "GoogleUrl")?.Value" class="google-bg"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="@settings.FirstOrDefault(x=>x.Key == "LinkedinUrl")?.Value" class="linkedin-bg"><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                    <!-- Recent comments start -->
+                    <div class="sidebar-widget recent-comments">
+                        <div class="main-title-2">
+                            <h1>Recent comments</h1>
+                        </div>
+                        @foreach (var item in Model.RecentBlogComment)
+                        {
+                            <div class="recent-comments-item mb-4">
+                                <div class="thumb">
+                                    <a href="#">
+                                        <img src="~/uploads/commentuser/default-user-icon-2.jpg" alt="imagecomment">
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <p>@item.Comment </p>
+                                    <span>By <b>@item.FullName</b></span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Blog body end -->
+@await Html.PartialAsync("_PartnerPartialView" , Model.Partners)

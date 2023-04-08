@@ -1,0 +1,90 @@
+﻿@using Alpha_Hotel_Project.Helpers
+@model StaffViewModel
+<!-- Sub banner start -->
+@await Html.PartialAsync("_TopHeaderPartialView")
+
+@await Html.PartialAsync("_MainHeaderPartialView")
+
+<div class="sub-banner">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1>Our Staff</h1>
+        </div>
+        <nav class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Home</a></li>
+                <li class="breadcrumb-item active">Our Staff</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Sub Banner end -->
+<!-- staff section start -->
+<div class="content-area staff-section">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.Staffs)
+            {
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <div class="staff-box-1">
+                        <div class="photo">
+                            <img style="width:300px;height:360px" src="~/uploads/staff/@item.ImageUrl" alt="staff" class="img-fluid w-100">
+                            <div class="overlay">
+                                <div class="border">
+                                    <div class="icon-holder">
+                                        <a href="@item.FacebookUrl" class="facebook-bg"><i class="fa fa-facebook"></i></a>
+                                    </div>
+                                    <div class="icon-holder">
+                                        <a href="@item.TwitterUrl" class="twitter-bg"><i class="fa fa-twitter"></i></a>
+                                    </div>
+                                    <div class="icon-holder">
+                                        <a href="@item.GoogleUrl" class="google-bg"><i class="fa fa-google-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <h4 class="title">
+                                <a href="staff.html">@item.Fullname</a>
+                            </h4>
+                            <p>@item.Profession.Name</p>
+                            <p><a href="tel:@item.PhoneNumber">@item.PhoneNumber</a></p>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+        <!-- Page navigation start -->
+        <div class="pagination-box">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    @if (Model.Staffs.HasPrevious)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-route-page="@(Model.Staffs.ActivePage-1)"><i class="fa fa-angle-left"></i></a>
+                        </li>
+                    }
+                    @for (int i = 1; i <= Model.Staffs.TotalPageCount; i++)
+                    {
+                        <li class="page-item"><a class="page-link  @((Model.Staffs.ActivePage==i)? "active" : "") " asp-route-page="@i">@i</a></li>
+                    }
+                    @if (Model.Staffs.HasNext)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-route-page="@((Model.Staffs.ActivePage+1))">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+        <!-- Page navigation end -->
+        
+    </div>
+</div>
+<!-- staff section end -->
+<!-- Partners strat -->
+@await Html.PartialAsync("_PartnerPartialView" , Model.Partners)
+<!-- Partners end -->

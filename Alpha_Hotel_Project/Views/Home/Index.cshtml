@@ -1,0 +1,371 @@
+﻿@model HomeViewModel
+@inject Alpha_Hotel_Project.Services.UserSettingService service;
+@{
+    int count = 0;
+    int countroom = 0;
+    AppUser appUser = await service.GetUser();
+    List<Setting> settings = await service.GetSettingsAsnyc();
+}
+<header class="main-header" id="main-header-2">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand logos" asp-action="index" asp-controller="home">
+                <img src="~/assets/img/logos/@settings.FirstOrDefault(x=>x.Key == "Logo")?.Value" alt="logo" class="logo-photo">
+                <img src="~/assets/img/logos/@settings.FirstOrDefault(x=>x.Key == "WhiteLogo")?.Value" alt="logo" class="logo-photo2">
+            </a>
+            <button class="navbar-toggler" id="drawer" type="button">
+                <span class="fa fa-bars"></span>
+            </button>
+            <div class="navbar-collapse collapse w-100 justify-content-end" id="navbar">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="index" asp-controller="home" aria-haspopup="true" aria-expanded="false">
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" asp-action="index" asp-controller="room" aria-haspopup="true" aria-expanded="false">
+                            Rooms
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Pages
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li class="dropdown">
+                                <a class="dropdown-item" asp-action="index" asp-controller="about">About Us</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-action="index" asp-controller="room">Booking System</a>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-item" asp-action="index" asp-controller="staff">Staff</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-action="login" asp-controller="account">Login</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-action="register" asp-controller="account">Sigup</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="index" asp-controller="blog" aria-haspopup="true" aria-expanded="false">
+                            Blog
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="index" asp-controller="contact" aria-haspopup="true" aria-expanded="false">
+                            Contact
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="index" asp-controller="room" class="btn-lg btn-4 btn-6">Booking System</a>
+                    </li>
+                    <li>
+                        <ul class="top-social-media pull-right" style=" padding-top:20px;padding-left:35px">
+                            @if (User.Identity.IsAuthenticated is false)
+                            {
+                                <li>
+                                    <a style="color:white" asp-action="login" itemid="staff" asp-controller="account"><i style="color:white;text-color:white" class="fa fa-sign-in"></i>Login</a>
+                                </li>
+                                <li>
+                                    <a style="color:white" asp-action="register" asp-controller="account"><i style="color:white;text-color:white" class="fa fa-user"></i>Register</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li style="color:white;">
+                                    <p style="color:white">@appUser.Fullname</p>
+                                    <a style="color:white" asp-action="logout" asp-controller="account"><i style="color:white;text-color:white" class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+                                    <a style="color:white" asp-action="profile" asp-controller="account"><p style="color:white;text-color:white" class="fa fa-user" aria-hidden="true"></p>My Profile</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+<!-- Banner start -->
+<div class="banner" id="banner-2">
+    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        @foreach (var item in Model.Sliders)
+        {
+            <div class="carousel-inner">
+                <div class="carousel-item item active">
+                    <img class="d-block w-100 h-100" src="~/uploads/slider/@item.Image" alt="banner">
+                    <div class="carousel-caption banner-slider-inner d-flex h-100">
+                        <div class="carousel-content container align-self-center">
+                            <div class="row bti-section">
+                                <div class="col-lg-7 col-md-12 align-self-center">
+                                    <div class="banner-test-info wow fadeInLeft delay-04s">
+                                        <h2>@item.Title</h2>
+                                        <p>@item.Descreption</p>
+                                        <a class="btn-lg btn-4 btn-6" asp-action="index" asp-controller="room">@item.ButtonText</a>
+                                    </div>
+                                </div>
+                                @*SearchBox*@
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<!-- Banner end -->
+<!-- Hotel section start -->
+<div class="content-area hotel-section bg-grey">
+    <div class="overlay">
+        <div class="container">
+            <!-- Main title -->
+            <div class="main-title">
+                <h1>Our Best Rooms</h1>
+            </div>
+            <div class="row wow fadeInUp delay-04s">
+                @await Html.PartialAsync("_RoomPartialView")
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Hotel section end -->
+<!-- Our facilties section start -->
+<div style="padding-top:50px" class="our-facilties-section content-area-5">
+    <div class="overlay">
+        <div class="container">
+            <!-- Main title -->
+            <div style="margin-bottom:75px;margin-top:20px" class="main-title">
+                <h1>Our Facilties</h1>
+            </div>
+            <div class="row">
+                @foreach (var item in Model.Facilities)
+                {
+                    <div class="col-lg-4 col-md-6 col-sm-12 wow fadeInLeft delay-04s" style="visibility: visible; animation-name: fadeInLeft;">
+                        <div class="services-box-2 d-flex">
+                            <div class="icon">
+                                @Html.Raw(@item.Icon)
+                            </div>
+                            <div class="contant">
+                                <h3><a href="#">@item.Title</a></h3>
+                                <p>@item.Descreption</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Our facilties section end -->
+<!-- News popular testimonials start -->
+<div class="news-popular-testimonials-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12 wow fadeInLeft delay-04s">
+                <div class="recent-news mb-50">
+                    <!-- Main title -->
+                    <div class="main-title">
+                        <h1>Recent Blogs</h1>
+                    </div>
+                    @foreach (var item in Model.PopularBlogs)
+                    {
+                        <div class="recent-news-item mb-3">
+                            <div class="thumb">
+                                <a asp-action="blogdetail" asp-controller="blog" asp-route-id="@item.Id">
+                                    <img style="height:50px;width:80px" src="~/uploads/blogs/@item.ImageUrl" alt="blog-img">
+                                </a>
+                            </div>
+                            <div class="content">
+                                <h3 class="media-heading">
+                                    <a asp-action="blogdetail" asp-controller="blog" asp-route-id="@item.Id">@item.Title.Substring(0,(item.Title.Length>25 ? 24 : item.Title.Length))</a>
+                                </h3>
+                                <div class="listing-post-meta">
+                                    <i class="fa fa-eye"></i>@item.ViewCount | <a href="#"><i class="fa fa-calendar"></i> @item.CreateDate.ToShortDateString()</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 wow fadeInUp delay-04s">
+                <!-- Main title -->
+                <div class="main-title">
+                    <h1>Testimonials</h1>
+                </div>
+                <!-- Testimonial 3 start -->
+                <div class="testimonials-3">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="text-center">
+                                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-indicators">
+                                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                    </div>
+                                    <div class="carousel-inner">
+                                        @foreach (var item in Model.BlogComments)
+                                        {
+                                            count++;
+                                            <div class="carousel-item @(count==1  ? "active" : "")">
+                                                <div class="item-inner">
+                                                    <p>@item.Comment</p>
+                                                    <div class="testimonials-avatar">
+                                                        <img src="~/uploads/commentuser/default-user-icon-2.jpg" alt="avatar">
+                                                    </div>
+                                                    <div class="author-name">
+                                                        @item.FullName
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 3 end -->
+            </div>
+            <div class="col-lg-4 col-md-12 col-sm-12 wow fadeInRight delay-04s">
+                <div class="gallery-section">
+                    <!-- Main title -->
+                    <div class="main-title">
+                        <h1>Popular Rooms</h1>
+                    </div>
+                    <!-- Popular places section start -->
+                    <div class="popular-places-section">
+                        <div id="carouselExampleFade2" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                @foreach (var item in Model.Rooms)
+                                {
+                                    countroom++;
+                                    <div class="carousel-item @(countroom==1 ? "active" : "")">
+                                        <div class="popular-places-item">
+                                            <div class="property-inner">
+                                                <div class="photo-overflow">
+                                                    <div class="property-photo">
+                                                        <img class="img-fluid w-100" src="~/uploads/rooms/@item.RoomImages.Where(x=>x.IsPoster==true).FirstOrDefault().ImageUrl" alt="popular-places">
+                                                    </div>
+                                                </div>
+                                                <div class="ling-section">
+                                                    <h3>
+                                                        <a href="rooms-details.html">@item.Name</a>
+                                                    </h3>
+                                                    <p class="text">@item.Descreption.Substring(0,(item.Descreption.Length>100 ? 100 : item.Descreption.Length))</p>
+                                                    <a asp-action="detail" asp-controller="room" asp-route-id="@item.Id" class="read-more-btn">Read More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade2" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true">
+                                    <i class="fa fa-angle-left"></i>
+                                </span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade2" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true">
+                                    <i class="fa fa-angle-right"></i>
+                                </span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Popular places section end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- News popular testimonials end -->
+<!-- staff section start -->
+<div class="content-area staff-section comon-slick">
+    <div class="container">
+        <!-- Main title -->
+        <div class="main-title">
+            <h1>Our Staff</h1>
+        </div>
+        <div class="slick row comon-slick-inner wow fadeInUp delay-04s" data-slick='{"slidesToShow": 4, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 2}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
+            @foreach (var item in Model.Staffs)
+            {
+                <div class="item slide-box">
+                    <div class="staff-box-4">
+                        <div class="item">
+                            <div class="thumb">
+                                <img src="~/uploads/staff/@item.ImageUrl" style="width:300px;height:360px" alt="staff" class="img-fluid w-100">
+                                <div class="info">
+                                    <h4>@item.Fullname</h4>
+                                    <span>@item.Profession.Name</span>
+                                </div>
+                                <div class="overlay text-light">
+                                    <h4><a asp-action="index" asp-controller="staff" asp-area="">@item.Fullname</a></h4>
+                                    <p>
+                                        @item.Descreption
+                                    </p>
+                                    <ul>
+                                        <li class="facebook">
+                                            <a href="@item.FacebookUrl" class="facebook-bg"><i class="fa fa-facebook"></i></a>
+                                        </li>
+                                        <li class="twitter">
+                                            <a href="@item.TwitterUrl" class="twitter-bg"><i class="fa fa-twitter"></i></a>
+                                        </li>
+                                        <li class="google">
+                                            <a href="@item.GoogleUrl" class="google-bg"><i class="fa fa-google"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+<!-- staff section ebd -->
+<!-- Blog section start -->
+<div style="padding-top:0px" class="blog-section content-area comon-slick">
+    <div class="container">
+        <!-- Main title -->
+        <div class="main-title">
+            <h1>Our Blog</h1>
+        </div>
+        <div class="slick row comon-slick-inner wow fadeInUp delay-04s" data-slick='{"slidesToShow": 3, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 2}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
+            @foreach (var item in Model.Blogs)
+            {
+                <div class="item slide-box">
+                    <div class="blog-1">
+                        <div class="blog-image">
+                            <img style="height:270px;width:410px" src="~/uploads/blogs/@item.ImageUrl" alt="image" class="img-fluid w-100">
+                            <div class="date-box">
+                                <span>@item.CreateDate.ToString("dd")</span>@item.CreateDate.ToString("MMM")
+                            </div>
+                        </div>
+                        <div class="detail">
+                            <div class="post-meta clearfix">
+                                <ul>
+                                    <li class="float-right mr-0"><a href="#"><i class="fa fa-commenting-o"></i></a>@item.BlogComments.Count</li>
+                                    <li class="float-right"><a href="#"><i class="fa fa-calendar"></i></a>@item.ViewCount</li>
+                                </ul>
+                            </div>
+                            <h3>
+                                <a asp-action="blogdetail" asp-controller="blog" asp-area="" asp-route-id="@item.Id">@item.Title</a>
+                            </h3>
+                            <p>@item.Descreption.Substring(0,110)</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Blog section end -->
+@await Html.PartialAsync("_PartnerPartialView" , Model.Partners)

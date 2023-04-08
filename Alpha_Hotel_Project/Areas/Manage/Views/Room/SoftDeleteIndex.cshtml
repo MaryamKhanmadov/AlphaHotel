@@ -1,0 +1,76 @@
+﻿@model PaginatedList<Room>
+@{
+    int count = 0;
+}
+<div class="container-fluid pt-4 px-4">
+    <div class="col-12">
+        <div class="bg-light rounded h-100 p-4">
+            <h6 style="margin-bottom: 1.5rem !important;" class="mb-4 border-bottom">Desactive Room List</h6>
+            <a class="btn btn-sm btn-sm-square btn-success m-2" style="float:right;padding-left:25px;padding-right:25px" asp-action="index" asp-controller="room"> <i class="fa fa-list-ul"></i> </a>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">PosterImage</th>
+                        <th scope="col">CreateDate</th>
+                        <th scope="col">Capacity</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">AdultPrice</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody style="vertical-align: middle;">
+                    @foreach (var item in Model)
+                    {
+                        count++;
+                        <tr>
+                            <th scope="row">@count</th>
+                            <td>
+                                <div>
+                                    <img style="width: 50px;height:50px;border-radius: 50%;" src="~/uploads/rooms/@item.RoomImages.FirstOrDefault(x=>x.IsPoster is true).ImageUrl">
+                                </div>
+                            </td>
+                            <td>@item.RoomCreationDate</td>
+                            <td>@item.Capacity</td>
+                            <td>@item.Type</td>
+                            <td>@item.AdultPrice</td>
+                            <td>
+                                <a class="btn btn-sm btn-sm-square btn-outline-success m-2" asp-action="restore" asp-route-id="@item.Id" asp-controller="room"> <i class="fa fa-trash-restore"></i> </a>
+                                <a class="btn btn-sm btn-sm-square btn-outline-danger m-2 delete-button" asp-route-id="@item.Id" asp-action="harddelete" asp-controller="room"> <i class="fa fa-eraser"></i> </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center my-3">
+    <form>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @if (Model.HasPrevious)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-route-page="@(Model.ActivePage-1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
+                @for (int i = 1; i <= Model.TotalPageCount; i++)
+                {
+                    <li class="page-item @((Model.ActivePage==i)? "active" : "")"><a class="page-link  " asp-route-page="@i">@i</a></li>
+                }
+                @if (Model.HasNext)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-route-page="@((Model.ActivePage+1))" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </form>
+</div>

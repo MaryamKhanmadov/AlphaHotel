@@ -1,0 +1,92 @@
+﻿@using Alpha_Hotel_Project.Enums
+@model Blog
+
+<div class="col-sm-12 pt-4 px-4">
+    <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">Blog Update</h6>
+        <form method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <label asp-for="Title" class="col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-10">
+                    <input asp-for="Title" class="form-control" placeholder="v...">
+                </div>
+                <span asp-validation-for="Title" style="color:red"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="SubHeading" class="col-sm-2 col-form-label">SubHeading</label>
+                <div class="col-sm-10">
+                    <input asp-for="SubHeading" class="form-control" placeholder="SubHeading...">
+                </div>
+                <span asp-validation-for="SubHeading" style="color:red"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="FacebookUrl" class="col-sm-2 col-form-label">FacebookUrl</label>
+                <div class="col-sm-10">
+                    <input asp-for="FacebookUrl" class="form-control" placeholder="FacebookUrl...">
+                </div>
+                <span asp-validation-for="FacebookUrl" style="color:red"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="LinkedinUrl" class="col-sm-2 col-form-label">LinkedinUrl</label>
+                <div class="col-sm-10">
+                    <input asp-for="LinkedinUrl" class="form-control" placeholder="LinkedinUrl...">
+                </div>
+                <span asp-validation-for="LinkedinUrl" style="color:red"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="TwitterUrl" class="col-sm-2 col-form-label">TwitterUrl</label>
+                <div class="col-sm-10">
+                    <input asp-for="TwitterUrl" class="form-control" placeholder="TwitterUrl...">
+                </div>
+                <span asp-validation-for="TwitterUrl" style="color:red"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="PinterestUrl" class="col-sm-2 col-form-label">PinterestUrl</label>
+                <div class="col-sm-10">
+                    <input asp-for="PinterestUrl" class="form-control" placeholder="PinterestUrl...">
+                </div>
+                <span asp-validation-for="PinterestUrl" style="color:red"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="GoogleUrl" class="col-sm-2 col-form-label">GoogleUrl</label>
+                <div class="col-sm-10">
+                    <input asp-for="GoogleUrl" class="form-control" placeholder="GoogleUrl...">
+                </div>
+                <span asp-validation-for="GoogleUrl" style="color:red"></span>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="BlogCategoryId" class="col-sm-2 col-form-label">BlogCategory</label>
+                <select class="form-select mb-3" aria-label="Default select example" asp-for="BlogCategoryId">
+                    <option selected="">Select BlogCategory</option>
+                    @foreach (var item in ViewBag.Categories)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="BlogCategoryId" style="color:red"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImageFile" class="form-label">ImageFile</label>
+                <input class="form-control" asp-for="ImageFile" placeholder="ImageFile...">
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                <div style="width:200px; margin-top:20px;position:relative">
+                    <img style="max-width:100%" src="~/uploads/blogs/@Model?.ImageUrl" />
+                </div>
+            </div>
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Descreption write here" asp-for="Descreption" style="height: 150px;"></textarea>
+                <label asp-for="Descreption">Descreption...</label>
+                <span asp-validation-for="Descreption" class="text-danger"></span>
+            </div><div class="form-floating">
+                <textarea class="form-control" placeholder="Quote write here" asp-for="Quote" style="height: 150px;"></textarea>
+                <label asp-for="Quote">Quote...</label>
+                <span asp-validation-for="Quote" class="text-danger"></span>
+            </div><div class="form-floating">
+                <textarea class="form-control" placeholder="SubHeadingDescreption write here" asp-for="SubHeadingDescreption" style="height: 150px;"></textarea>
+                <label asp-for="SubHeadingDescreption">SubHeadingDescreption...</label>
+                <span asp-validation-for="SubHeadingDescreption" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿@model HouseRules
+
+<div class="col-sm-12 pt-4 px-4">
+    <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">House Rule Create</h6>
+        <form method="post">
+            <div class="row mb-3">
+                <label asp-for="Name" class="col-sm-2 col-form-label">House Rule Name</label>
+                <div class="col-sm-10">
+                    <input asp-for="Name" class="form-control" placeholder="House Rule...">
+                </div>
+                <span asp-validation-for="Name" style="color:red"></span>
+
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>

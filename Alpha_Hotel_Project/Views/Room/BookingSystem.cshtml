@@ -1,0 +1,169 @@
+﻿@using Alpha_Hotel_Project.Enums
+@model CheckOutViewModel
+@{
+    int count = 0;
+}
+@await Html.PartialAsync("_TopHeaderPartialView")
+@await Html.PartialAsync("_MainHeaderPartialView")
+<!-- Sub banner start -->
+<div class="sub-banner">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1>Booking System</h1>
+        </div>
+        <nav class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Home</a></li>
+                <li class="breadcrumb-item active">Booking System</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Sub Banner end -->
+<!-- Booking flow start -->
+<div class="booking-flow content-area-6">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="clearfix"></div>
+
+                <div id="step-4">
+                    <div class="panel-body">
+                        <h3 class="booking-heading-2">Booking Details</h3>
+                        <div class="row g-0 booling-details-box booling-details-box-2 mb-30">
+                            <div class="col-xl-7 col-lg-7 col-md-12">
+                                <div id="carouselExampleCaptions2" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-indicators">
+                                        <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                        <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                        <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                    </div>
+                                    <div class="carousel-inner">
+                                        @{
+                                            count = 0;
+                                        };
+                                        @foreach (var item in Model.Room.RoomImages.Where(x => x.IsPoster == false))
+                                        {
+                                            count++;
+                                            <div class="carousel-item @(count==1 ? "active" : "")">
+                                                <img style="height:500px;widht:750px" src="~/uploads/rooms/@item.ImageUrl" class="d-block w-100" alt="photo">
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-5 col-lg-5 col-md-12">
+                                <div class="info">
+                                    <h4>Your Order ID: #@Model.OrderItem.RoomId.ToString().Substring(0,7)</h4>
+                                    <ul>
+                                        <li>
+                                            <span>Check In:</span> @Model.OrderItem.StartRentDate.ToString("d/MM/yyyy")
+                                        </li>
+                                        <li>
+                                            <span>Check Out:</span> @Model.OrderItem.EndRentDate.ToString("d/MM/yyyy")
+                                        </li>
+                                        <li>
+                                            <span>Adults:</span> @Model.OrderItem.AdultCount
+                                        </li>
+                                        <li>
+                                            <span>Child:</span> @Model.OrderItem.ChildCount
+                                        </li>
+                                    </ul>
+                                    <div class="your-address">
+                                        <strong>Your Address:</strong>
+                                        <address>
+                                            <strong>@Model.OrderItem.Fullname</strong>
+                                            <br>
+                                            @Model.OrderItem.Address
+                                        </address>
+                                    </div>
+                                    <div class="price">
+                                        Total:$@Model.OrderItem.TotalPrice
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form method="post" asp-action="order" asp-controller="room" id="cardform">
+                            <div style="background-color: #fff;box-shadow: 0 0 5px rgb(0 0 0 / 10%);" class="sidebar-widget sw-2">
+                                <h3 class="booking-heading-2">Card Info</h3>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group text-danger">
+                                            <div asp-validation-summary="ModelOnly" style="text-color:red" class="text-danger"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group card-number">
+                                            <label asp-for="CardNumber">Card Number</label>
+                                            <input asp-for="CardNumber" value="@Model.CardNumber" placeholder="Card Number">
+                                            <span asp-validation-for="CardNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group CVV">
+                                            <label asp-for="CVV" class="form-label">CVV</label>
+                                            <input asp-for="CVV" value="@Model.CVV" class="form-control" placeholder="CVV">
+                                            <span asp-validation-for="CVV" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div style="padding-top: 40px;" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group Country">
+                                            <label asp-for="CardMonth">Month</label>
+                                            <select asp-for="CardMonth" value="@Model.CardMonth" class="input ddl">
+                                                <option>Month</option>
+                                                <option selected>01</option>
+                                                <option>02</option>
+                                                <option>03</option>
+                                                <option>04</option>
+                                                <option>05</option>
+                                                <option>06</option>
+                                                <option>07</option>
+                                                <option>08</option>
+                                                <option>09</option>
+                                                <option>10</option>
+                                                <option>11</option>
+                                                <option>12</option>
+                                                <span asp-validation-for="CardMonth" class="text-danger"></span>
+                                            </select>
+                                            <label asp-for="CardYear">Year</label>
+                                            <select asp-for="CardYear" value="@Model.CardYear" class="input ddl">
+                                                <option>Year</option>
+                                                <option selected>23</option>
+                                                <option>24</option>
+                                                <option>25</option>
+                                                <option>26</option>
+                                                <option>27</option>
+                                                <option>28</option>
+                                                <option>29</option>
+                                                <option>30</option>
+                                                <option>31</option>
+                                                <option>32</option>
+                                                <option>33</option>
+                                                <span asp-validation-for="CardYear" class="text-danger"></span>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                        <div style="padding:25px" class="col-lg-12">
+                            <div class="house-rules mb-50">
+                                <h3>House Rules</h3>
+                                <ul>
+                                    @foreach (var item in Model.HouseRules)
+                                    {
+                                        <li><i class="fa fa-hand-o-right"></i> @item.Name</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <button class="btn-md btn-theme btn-4 btn-7 nextBtn pull-right" type="submit" form="cardform">confirm booking</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Booking flow end -->

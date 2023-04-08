@@ -1,0 +1,36 @@
+﻿@model About
+
+<div class="col-sm-12 pt-4 px-4">
+    <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">About Update</h6>
+        <form method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <label asp-for="Title" class="form-label">Title</label>
+                <input class="form-control" asp-for="Title" placeholder="Title...">
+            </div>
+            <div class="mb-3">
+                <label asp-for="ButtonText" class="form-label">ButtonText</label>
+                <input class="form-control" asp-for="ButtonText" placeholder="ButtonText...">
+            </div>
+            <div class="mb-3">
+                <label asp-for="ExperienceBoxText" class="form-label">ExperienceBoxText</label>
+                <input class="form-control" asp-for="ExperienceBoxText" placeholder="ExperienceBoxText...">
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImageSmallFile" class="form-label">ImageSmallFile</label>
+                <input class="form-control" asp-for="ImageSmallFile" placeholder="ImageSmallFile...">
+            </div>
+            <div class="mb-3">
+                <img style="border: 1px solid #ddd;border-radius: 4px;padding: 5px;width: 150px;" src="~/uploads/about/@Model.ImageSmall">
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImageBigFile" class="form-label">ImageBigFile</label>
+                <input class="form-control" asp-for="ImageBigFile" placeholder="ImageBigFile...">
+            </div>
+            <div class="mb-3">
+                <img style="border: 1px solid #ddd;border-radius: 4px;padding: 5px;width: 150px;" src="~/uploads/about/@Model.ImageBig">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,132 @@
+﻿@model AboutViewModel
+<!-- Top header start -->
+@await Html.PartialAsync("_TopHeaderPartialView")
+<!-- Top header end -->
+<!-- Main header start -->
+@await Html.PartialAsync("_MainHeaderPartialView")
+<!-- Main header end -->
+<!-- Sub banner start -->
+<div class="sub-banner">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1>About Us</h1>
+        </div>
+        <nav class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Home</a></li>
+                <li class="breadcrumb-item active">About Us</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Sub Banner end -->
+<!-- About hotel alpha start -->
+<div class="about-hotel-alpha content-area-6">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 wow fadeInLeft delay-04s">
+                <div class="about-img-section">
+                    <div class="image-box">
+                        <div class="image-1"><img src="~/uploads/about/@Model.About?.ImageBig" class="rounded" alt="photo"></div>
+                        <div class="image-2"><img src="~/uploads/about/@Model.About?.ImageSmall" class="rounded" alt="photo"></div>
+                    </div>
+                    <div class="about-box-Experience">
+                        <h3 class="text-white">@Model.About?.ExperienceBoxText</h3>
+                        <p class="mb-0 text-white">Years of Experience</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 wow fadeInRight delay-04s align-self-center" id="facility">
+                <div class="about-content-section">
+                    <h5>Hotel <span>Bayview</span></h5>
+                    <h1>@Model.About?.Title</h1>
+                    <ul class="network-list mb-40">
+                        @foreach (var item in Model.Facilities.Take(3))
+                        {
+                            <li>
+                                @Html.Raw(@item?.Icon)
+                                <h4>@item.Title</h4>
+                                <p>@item.Descreption</p>
+                            </li>
+                        }
+                    </ul>
+                    <a class="btn-lg btn-5" href="#facility"><span>@Model.About?.ButtonText</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About hotel alpha start -->
+<!-- Our facilties section start -->
+<div class="our-facilties-section content-area-5 bg-white">
+    <div class="overlay">
+        <div class="container">
+            <!-- Main title -->
+            <div class="main-title">
+                <h1>Our Facilties</h1>
+            </div>
+            <div class="row">
+                @foreach (var item in Model.Facilities)
+                {
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="services-box-2 d-flex">
+                            <div class="icon">
+                                @Html.Raw(@item.Icon)
+                            </div>
+                            <div class="contant">
+                                <h3><a href="#">@item.Title</a></h3>
+                                <p>@item.Descreption</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Our facilties section end -->
+<!-- staff section start -->
+<div style="padding-top:50px" class="staff-section content-area comon-slick bg-white">
+    <div class="container">
+        <!-- Main title -->
+        <div class="main-title">
+            <h1>Our Staff</h1>
+        </div>
+        <div class="slick row comon-slick-inner" data-slick='{"slidesToShow": 4, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 2}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
+            @foreach (var item in Model.Staffs)
+            {
+                <div class="item slide-box">
+                    <div class="staff-box-1">
+                        <div class="photo">
+                            <img style="height:375px;width:300px" src="~/uploads/staff/@item.ImageUrl" alt="staff" class="img-fluid w-100">
+                            <div class="overlay">
+                                <div class="border">
+                                    <div class="icon-holder">
+                                        <a href="@item.FacebookUrl" class="facebook-bg"><i class="fa fa-facebook"></i></a>
+                                    </div>
+                                    <div class="icon-holder">
+                                        <a href="@item.TwitterUrl" class="twitter-bg"><i class="fa fa-twitter"></i></a>
+                                    </div>
+                                    <div class="icon-holder">
+                                        <a href="@item.GoogleUrl" class="google-bg"><i class="fa fa-google-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <h4 class="title">
+                                <a asp-action="index" asp-controller="staff">@item.Fullname</a>
+                            </h4>
+                            <p><a href="tel:@item.PhoneNumber">@item.PhoneNumber</a></p>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+<!-- staff section ebd -->
+<!-- Partners strat -->
+@await Html.PartialAsync("_PartnerPartialView" , Model.Partners)
+<!-- Partners end -->
